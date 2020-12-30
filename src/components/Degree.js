@@ -1,14 +1,14 @@
 import React from "react";
 
-export default function Degree() {
+export default function Degree({ convert }) {
   return (
     <div className="degree__container">
-      <div className="celsius">
+      <button onClick={() => convert(false)} className="celsius">
         <p className="celsius-text">&ordm;C</p>
-      </div>
-      <div className="fahrenheit">
+      </button>
+      <button onClick={() => convert(true)} className="fahrenheit">
         <p className="fahrenheit-text">&ordm;F</p>
-      </div>
+      </button>
     </div>
   );
 }

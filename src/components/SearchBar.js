@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { CloseButton } from "./assests/icon/CloseButton";
 import { SearchIcon } from "./assests/icon/SearchIcon";
 import { ArrowIcon } from "./assests/icon/ArrowIcon";
 
 export default function SearchBar({ toggle, hideToggle }) {
+  const useFocus = () => {
+    const htmlElRef = useRef(null);
+    const setFocus = () => {
+      htmlElRef.current && htmlElRef.current.focus();
+    };
+
+    return [htmlElRef, setFocus];
+  };
+
+  const [inpuRef, setInputFocus] = useFocus();
+
   let style;
   if (toggle) {
+    setInputFocus();
     style = "show";
   } else {
     style = "";
@@ -18,7 +30,15 @@ export default function SearchBar({ toggle, hideToggle }) {
       <form action="">
         <div className="search-icon">
           <SearchIcon />
-          <input type="search" placeholder="search location" name="" id="" />
+          <label htmlFor="Search-for-location">
+            <input
+              type="search"
+              placeholder="search location"
+              name=""
+              id="Search-for-location"
+              ref={inpuRef}
+            />
+          </label>
         </div>
         <input type="submit" value="Search" name="" id="" />
       </form>
