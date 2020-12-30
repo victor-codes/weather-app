@@ -3,18 +3,20 @@ import Highlight from "./components/Highlight";
 import ComingWeather from "./components/ComingWeather";
 import Degree from "./components/Degree";
 import Sidebar from "./components/Sidebar";
-import formatDate from "./components/formatDate";
 import "./App.css";
+
 const SearchBar = lazy(() => import("./components/SearchBar"));
 
 function App() {
+  const proxyurl = "https://api.allorigins.win/raw?url=";
+
   const [fahrenheit, setFahrenheit] = useState(false);
   const [toggleSearchBar, setToggleSearchBar] = useState(false);
   const [appState, setAppState] = useState({
     isLoading: true,
     data: null,
   });
-  const proxyurl = "https://api.allorigins.win/raw?url=";
+
   let lattLong;
 
   function thirdFetch(query) {
@@ -100,7 +102,7 @@ function App() {
     } else {
       navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
     }
-  }, [setAppState]);
+  }, []);
 
   const weather = [
     {
@@ -137,52 +139,53 @@ function App() {
     />
   ));
 
-  if (appState.isLoading) {
-    return (
-      <div className="App">
-        <div className="parent">
-          <div className="container">
-            <div className="child"></div>
-          </div>
+  const LoadInitial = (
+    <div className="App">
+      <div className="parent">
+        <div className="container">
+          <div className="child"></div>
         </div>
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: "1.6rem",
-            color: "#ffffff",
-            marginTop: "80px",
-          }}
-        >
-          Hold on, fetching data may take some time :)
-        </p>
       </div>
-    );
-  } else
-    return (
-      <div className="App">
-        <div className="aside1">
-          <Sidebar
-            data={appState.data}
-            toggle={(val) => setToggleSearchBar(val)}
-            fahr={fahrenheit}
-          />
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: "1.6rem",
+          color: "#ffffff",
+          marginTop: "80px",
+        }}
+      >
+        Hold on, fetching data may take some time :)
+      </p>
+    </div>
+  );
 
-          <Suspense fallback={<div>Loading Search...</div>}>
-            <SearchBar
-              toggle={toggleSearchBar}
-              hideToggle={(val) => setToggleSearchBar(val)}
-            />
-          </Suspense>
-        </div>
-        <main className="aside2">
-          <div className="aside-content">
-            <Degree convert={(r) => setFahrenheit(r)} />
-            <div className="coming__weather__container wrap">{WeatherList}</div>
-            <Highlight data={appState.data} />
-          </div>
-        </main>
+  const Loaded = (
+    <div className="App">
+      <div className="aside1">
+        <Sidebar
+          data={appState.data}
+          toggle={(val) => setToggleSearchBar(val)}
+          fahr={fahrenheit}
+        />
+
+        <Suspense fallback={<div>Loading Search...</div>}>
+          <SearchBar
+            toggle={toggleSearchBar}
+            hideToggle={(val) => setToggleSearchBar(val)}
+          />
+        </Suspense>
       </div>
-    );
+      <main className="aside2">
+        <div className="aside-content">
+          <Degree convert={(r) => setFahrenheit(r)} />
+          <div className="coming__weather__container wrap">{WeatherList}</div>
+          <Highlight data={appState.data} />
+        </div>
+      </main>
+    </div>
+  );
+
+  return appState.isLoading ? LoadInitial : Loaded;
 }
 
 export default App;
