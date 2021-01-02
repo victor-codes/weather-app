@@ -1,10 +1,10 @@
 import React from "react";
 
-export const CloseButton = ({ hideToggle }) => {
+export const CloseButton = ({ isOpen }) => {
   return (
     <button
       aria-label="Close search panel"
-      onClick={() => hideToggle(false)}
+      onClick={() => isOpen(false)}
       style={{ cursor: "pointer" }}
       className="close"
     >

@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { Location } from "./assests/icon/Location";
-import Background from "./media/Cloud-background.png";
+import Background from "./media/Cloud-background.webp";
 import { formatDate } from "./formatDate";
 import WeatherImage from "./WeatherImage";
 import { convertToF } from "./ConvertToF";
@@ -9,20 +9,11 @@ export default function Sidebar({
   toggle,
   fahr,
   data: { consolidated_weather, title },
+  load,
+  location,
 }) {
-  const useFocus = () => {
-    const htmlElRef = useRef(null);
-    const setFocus = () => {
-      htmlElRef.current && htmlElRef.current.focus();
-    };
-    return [htmlElRef, setFocus];
-  };
-
-  const [inpuRef, setInputFocus] = useFocus();
-  if (!toggle) setInputFocus();
-
   return (
-    <div className="fixed">
+    <aside className="fixed">
       <div
         style={{
           position: "relative",
@@ -38,12 +29,11 @@ export default function Sidebar({
             aria-label="Seach for places"
             onClick={() => toggle(true)}
             className="input1"
-            ref={inpuRef}
           >
             Seach for places
           </button>
           <button aria-label="Go to current Location" style={{ padding: "0" }}>
-            <div className="location-btn">
+            <div className="location-btn" onClick={() => load(!location)}>
               <Location />
             </div>
           </button>
@@ -67,7 +57,7 @@ export default function Sidebar({
           <h2>{consolidated_weather[0].weather_state_name}</h2>
           <div className="today-data">
             <p className="today-data-text">Today</p>
-            <span style={{ padding: "0px 16px" }}>.</span>
+            <span style={{ padding: "0px 16px" }}>•</span>
             <p className="today-data-text">
               {formatDate(consolidated_weather[0].applicable_date)}
             </p>
@@ -87,6 +77,6 @@ export default function Sidebar({
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
