@@ -45,7 +45,7 @@ export default function Sidebar({
           />
         </div>
         <div className="today__weather__data" style={{ marginTop: "88px" }}>
-          <h1>
+          <h1 style={{ textAlign: "center" }}>
             <span className="first__h1">
               {fahr
                 ? convertToF(Math.round(consolidated_weather[0].the_temp))
