@@ -22,6 +22,8 @@ export default function ComingWeather({
           className="weather__class"
           src={WeatherImage(consolidated_weather[index].weather_state_abbr)}
           alt={consolidated_weather[index].weather_state_name}
+          git
+          status
         />
       </div>
       <div className="degree">
